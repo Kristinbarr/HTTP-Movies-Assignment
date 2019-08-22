@@ -70,7 +70,14 @@ body {
   padding: 5px 10px;
   background-color: lightskyblue;
 }
-
+.edit-button {
+  position: absolute;
+  top: 70px;
+  right: 25px;
+  border: 1px solid grey;
+  padding: 5px 10px;
+  background-color: lightseagreen;
+}
 .movie-warning {
   color: red;
   text-align: center;
