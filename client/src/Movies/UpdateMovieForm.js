@@ -10,41 +10,50 @@ const initialMovie = {
 }
 
 const UpdateMovieForm = (props) => {
-  console.log('props update form', props)
   const [movie, setMovie] = useState(initialMovie)
+
   console.log('movie', movie)
+
   useEffect(() => {
     const id = props.match.params.id
-    console.log('id',id)
     const movieToUpdate = props.movies.find((mov) => `${mov.id}` === id)
     if (movieToUpdate) setMovie(movieToUpdate)
   }, [props.movies, props.match.params.id])
 
   const changeHandler = (ev) => {
-    console.log('ev', ev)
     ev.persist()
     let value = ev.target.value
-    // if (ev.target.name === 'price') {
-    //   value = parseInt(value, 10)
-    // }
+    if (ev.target.name === 'metascore') {
+      value = parseInt(value, 10)
+    }
 
     setMovie({
       ...movie,
       [ev.target.name]: value
     })
   }
+  const handleStar = (i) => (e) => {
+    setMovie({
+      ...movie,
+      stars: movie.stars.map((star, starIndex) =>
+        starIndex === i ? e.target.value : star
+      )
+    })
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
     axios
-      .put(`http://localhost:5000/movies/${movie.id}`, movie)
+      .put(`http://localhost:5000/api/movies/${movie.id}`, movie)
       .then((res) => {
-        console.log('handlesubmit res', res)
         setMovie(initialMovie)
         props.updateMovieList(res.data)
         props.history.push(`/movies/${movie.id}`)
       })
-      .catch((err) => console.log(err.response))
+      .catch((err) => {
+        if (err.response.status === 422) props.history.push('/')
+        console.log(err.response)
+      })
   }
 
   return (
@@ -77,14 +86,16 @@ const UpdateMovieForm = (props) => {
           value={movie.metascore}
         />
         <div className='baseline' />
-
-        <input
-          type='string'
-          name='stars'
-          onChange={changeHandler}
-          placeholder='Stars'
-          value={movie.stars}
-        />
+        {movie.stars.map((star, i) => {
+          console.log('stars map', star)
+          return <input
+            type='string'
+            name='stars'
+            onChange={handleStar(i)}
+            placeholder='Star'
+            value={star}
+          />
+        })}
         <div className='baseline' />
 
         <button className='md-button form-button'>Update</button>
