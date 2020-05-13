@@ -12,8 +12,6 @@ const initialMovie = {
 const UpdateMovieForm = (props) => {
   const [movie, setMovie] = useState(initialMovie)
 
-  console.log('movie', movie)
-
   useEffect(() => {
     const id = props.match.params.id
     const movieToUpdate = props.movies.find((mov) => `${mov.id}` === id)
