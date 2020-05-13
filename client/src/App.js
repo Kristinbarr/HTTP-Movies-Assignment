@@ -8,16 +8,17 @@ import UpdateMovieForm from './Movies/UpdateMovieForm'
 const App = () => {
   const [savedList, setSavedList] = useState([])
   const [movies, setMovies] = useState([])
-  const addToSavedList = (movie) => {
+
+  const addToSavedList = movie => {
     setSavedList([...savedList, movie])
   }
 
-  const updateMovieList = (movie) => {
+  const updateMovieList = movie => {
     setMovies([...movies, movie])
   }
 
-  const removeMovie = (movieId) => {
-    const newList = movies.filter((movie) => movie.id !== movieId)
+  const removeMovie = movieId => {
+    const newList = movies.filter(movie => movie.id !== movieId)
     setMovies(newList)
   }
 
@@ -26,24 +27,22 @@ const App = () => {
       <SavedList list={savedList} />
       <Route
         exact
-        path='/'
-        render={(props) => <MovieList {...props} setMovies={setMovies} />}
+        path="/"
+        render={props => <MovieList {...props} setMovies={setMovies} />}
       />
       <Route
-        path='/movies/:id'
-        render={(props) => {
-          return (
-            <Movie
-              {...props}
-              removeMovie={removeMovie}
-              addToSavedList={addToSavedList}
-            />
-          )
-        }}
+        path="/movies/:id"
+        render={props => (
+          <Movie
+            {...props}
+            removeMovie={removeMovie}
+            addToSavedList={addToSavedList}
+          />
+        )}
       />
       <Route
-        path='/update-movie/:id'
-        render={(props) => (
+        path="/update-movie/:id"
+        render={props => (
           <UpdateMovieForm
             {...props}
             movies={movies}

@@ -14,7 +14,6 @@ export default class MovieList extends Component {
     axios
       .get("http://localhost:5000/api/movies")
       .then(res => {
-        // console.log('movie list', res.data)
         this.setState({ movies: res.data })
         this.props.setMovies(res.data)
       })
